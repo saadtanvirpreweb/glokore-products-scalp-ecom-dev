@@ -462,7 +462,7 @@ $(document).ready(function () {
 
   function updateAfflinksLinksOutbound() {
     var urlParams = new URLSearchParams(window.location.search);
-    var baseUrl = 'https://get-freshia.com/v17/checkout?region=us&loader=1&_ef_transaction_id=&uid=5226&oid=246&affid=246&transaction_id=1dc783e890b84209b89587b144a78982';
+    var baseUrl = 'https://glokore.com/scalpmassager/checkout4/?affId=nva&unit=1&uid=2651&c2=756&c1=16';
 
     // Create URLSearchParams object from the base URL
     var baseUrlObj = new URL(baseUrl);
@@ -510,46 +510,7 @@ $(document).ready(function () {
     }
   }
 
-  function updateShippingDate() {
-    if ($('.date-to-ship').length) {
-      var currentDate = new Date();
-      var shippingDate = new Date(currentDate);
-      shippingDate.setDate(currentDate.getDate() + 1);
 
-      var dayNames = ['SUN', 'MON', 'TUE', 'WED', 'ThU', 'FRI', 'SAT'];
-      var dayOfWeek = dayNames[shippingDate.getDay()];
-
-      var day = shippingDate.getDate();
-      var ordinalSuffix;
-
-      if (day > 3 && day < 21) {
-        ordinalSuffix = 'th';
-      } else {
-        switch (day % 10) {
-          case 1:
-            ordinalSuffix = 'st';
-            break;
-          case 2:
-            ordinalSuffix = 'nd';
-            break;
-          case 3:
-            ordinalSuffix = 'rd';
-            break;
-          default:
-            ordinalSuffix = 'th';
-        }
-      }
-
-      var monthNames = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December',
-      ];
-      var month = monthNames[shippingDate.getMonth()];
-
-      var formattedDate = dayOfWeek + ' ' + day + ordinalSuffix + ' ' + month;
-      $('.date-to-ship').text(formattedDate);
-    }
-  }
 
   function InitializeFAQ() {
     if ($('.faq-item').length) {
@@ -835,7 +796,7 @@ $(document).ready(function () {
       var tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
 
-      var dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+      var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       var dayName = dayNames[tomorrow.getDay()];
       var dateNum = tomorrow.getDate();
 
