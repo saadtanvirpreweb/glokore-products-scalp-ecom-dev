@@ -1040,92 +1040,76 @@ $(document).ready(function () {
   }
 
   function HeroSlider() {
-    const totalSlides = 8;
+  const totalSlides = 8;
 
-    /* ---- MOBILE SLIDER (touch + mouse drag) ---- */
-let mCurrent = 0;
-let touchStartX = 0;
-let mouseStartX = 0;
-let isDragging = false;
+  let mCurrent = 0;
+  let touchStartX = 0;
+  let mouseStartX = 0;
+  let isDragging = false;
 
-// Touch events
-$('#mSliderWrapper').on('touchstart', function (e) {
-  touchStartX = e.originalEvent.touches[0].clientX;
-});
-$('#mSliderWrapper').on('touchend', function (e) {
-  const diff = touchStartX - e.originalEvent.changedTouches[0].clientX;
-  if (Math.abs(diff) > 40) {
-    mGoTo(diff > 0 ? mCurrent + 1 : mCurrent - 1);
+  function mGoTo(index) {
+    mCurrent = Math.max(0, Math.min(index, totalSlides - 1));
+    const fillPct = ((mCurrent + 1) / totalSlides) * 100;
+    $('#mSliderTrack').css('transform', `translateX(-${mCurrent * 100}%)`);
+    $('#mProgressLine').css('width', fillPct + '%');
   }
-});
 
-// Mouse drag events
-$('#mSliderWrapper').on('mousedown', function (e) {
-  isDragging = true;
-  mouseStartX = e.clientX;
-  e.preventDefault(); // prevents text selection while dragging
-});
-$(document).on('mouseup', function (e) {
-  if (!isDragging) return;
-  isDragging = false;
-  const diff = mouseStartX - e.clientX;
-  if (Math.abs(diff) > 40) {
-    mGoTo(diff > 0 ? mCurrent + 1 : mCurrent - 1);
-  }
-});
-// Cancel drag if mouse leaves window
-$(document).on('mouseleave', function () {
-  isDragging = false;
-});
-
-
-    function mGoTo(index) {
-      mCurrent = Math.max(0, Math.min(index, totalSlides - 1));
-      const fillPct = ((mCurrent + 1) / totalSlides) * 100;
-      $('#mSliderTrack').css('transform', `translateX(-${mCurrent * 100}%)`);
-      $('#mProgressLine').css('width', fillPct + '%');
+  // ✅ Touch events (only once)
+  $('#mSliderWrapper').on('touchstart', function (e) {
+    touchStartX = e.originalEvent.touches[0].clientX;
+  });
+  $('#mSliderWrapper').on('touchend', function (e) {
+    const diff = touchStartX - e.originalEvent.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      mGoTo(diff > 0 ? mCurrent + 1 : mCurrent - 1);
     }
+  });
 
-    $('#mSliderWrapper').on('touchstart', function (e) {
-      touchStartX = e.originalEvent.touches[0].clientX;
-    });
-    $('#mSliderWrapper').on('touchend', function (e) {
-      const diff = touchStartX - e.originalEvent.changedTouches[0].clientX;
-      if (Math.abs(diff) > 40) {
-        mGoTo(diff > 0 ? mCurrent + 1 : mCurrent - 1);
+  // ✅ Mouse drag events
+  $('#mSliderWrapper').on('mousedown', function (e) {
+    isDragging = true;
+    mouseStartX = e.clientX;
+    e.preventDefault();
+  });
+  $(document).on('mouseup', function (e) {
+    if (!isDragging) return;
+    isDragging = false;
+    const diff = mouseStartX - e.clientX;
+    if (Math.abs(diff) > 40) {
+      mGoTo(diff > 0 ? mCurrent + 1 : mCurrent - 1);
+    }
+  });
+  $(document).on('mouseleave', function () {
+    isDragging = false;
+  });
+
+  // ✅ Accordion
+  $('.accordion-toggle').on('click', function () {
+    const targetId = $(this).data('target');
+    const $body = $('#' + targetId);
+    const $btn = $(this);
+    const isOpen = $body.hasClass('open');
+
+    $('.accordion-body').each(function () {
+      if ($(this).hasClass('open')) {
+        $(this).slideUp(250).removeClass('open');
       }
     });
-
-   
-    $('.accordion-toggle').on('click', function () {
-      const targetId = $(this).data('target');
-      const $body = $('#' + targetId);
-      const $btn = $(this);
-      const isOpen = $body.hasClass('open');
-
-      // Close all
-      $('.accordion-body').each(function () {
-        if ($(this).hasClass('open')) {
-          $(this).slideUp(250).removeClass('open');
-        }
-      });
-      // Reset all button labels to closed state
-      $('.accordion-toggle').each(function () {
-        $(this).find('.open-icon').addClass('hidden');
-        $(this).find('.closed-icon').removeClass('hidden');
-        $(this).find('span:first').removeClass('font-semibold').addClass('font-normal');
-      });
-
-      // If it was closed, open it
-      if (!isOpen) {
-        $body.slideDown(250).addClass('open');
-        $btn.find('.open-icon').removeClass('hidden');
-        $btn.find('.closed-icon').addClass('hidden');
-        $btn.find('span:first').removeClass('font-normal').addClass('font-semibold');
-      }
+    $('.accordion-toggle').each(function () {
+      $(this).find('.open-icon').addClass('hidden');
+      $(this).find('.closed-icon').removeClass('hidden');
+      $(this).find('span:first').removeClass('font-semibold').addClass('font-normal');
     });
 
-  }
+    if (!isOpen) {
+      $body.slideDown(250).addClass('open');
+      $btn.find('.open-icon').removeClass('hidden');
+      $btn.find('.closed-icon').addClass('hidden');
+      $btn.find('span:first').removeClass('font-normal').addClass('font-semibold');
+    }
+  });
+}
+
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // BOOT: Initialize everything
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
